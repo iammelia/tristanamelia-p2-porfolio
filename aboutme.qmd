@@ -2,6 +2,11 @@
 title: "About me"
 ---
 
-Add some text and a figure describing myself.
+My name is Amelia Tristan. I am looking to use my graduate degree in pharmacy/healthcare. I have a BS in Math with a minor in Computer Science from StMU. I am obsessed with cats and Sanrio. I am also currently unemployed so if anyone knows if their employers are hiring, please let me know. The job market is rough ):
 
-For details, see the exercise instructions. 
+![Me](me.jpg)
+![Pecan](pecan.jpg)
+
+[Click Here](https://www.sciencedirect.com/science/article/abs/pii/S0006320716304888)
+Here is a link to a scholarly article about cats and their outdoor roaming areas. Analysis shows male cats typically have a farther range of outdoor movement than female cats.
+

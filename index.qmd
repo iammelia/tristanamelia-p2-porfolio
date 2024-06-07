@@ -4,7 +4,7 @@ title: "My website and data analysis portfolio"
 
 # Hello
 
-### And hello again
+### Nice to see you!
 
 Welcome to **my website** and _data analysis portfolio._ 
 
@@ -12,4 +12,4 @@ Welcome to **my website** and _data analysis portfolio._
 * Please use the `Menu Bar` above to look around.
 * Have fun!
 
-**Feel free to change this text any way you want 😁!**
+**Currently looking for a job. Would love a point in the right direction. I am desperate...**
