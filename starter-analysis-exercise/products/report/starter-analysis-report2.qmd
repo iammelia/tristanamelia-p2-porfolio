@@ -24,7 +24,7 @@ library(here)
 library(knitr)
 ```
 
-Leo Salazar attempted to contribute to this exercise. Pushed files were unedited. Data was not cleaned and figures were not created. The requested files to be copied were copied and named appropriately by Leo. I added what was needed for the exercise due to time constraints.
+Leo Salazar contributed to this exercise.
 
 # Summary/Abstract
 _Write a summary of your project._
