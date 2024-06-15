@@ -1,6 +1,6 @@
 ---
 title: "An example exploratory analysis script"
-author: "Leonel Salazar"
+author: "Andreas Handel"
 date: "10/28/2021"
 output: html_document
 ---
@@ -32,6 +32,7 @@ Plots produced here can be scatterplots, boxplots, violinplots, etc. Tables can 
 library(here) #for data loading/saving
 library(dplyr)
 library(skimr)
+#update.packages("ggplot2")
 library(ggplot2)
 ```
 
@@ -40,12 +41,14 @@ Load the data.
 
 ```{r}
 #Path to data. Note the use of the here() package and not absolute paths
-data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata.rds")
-#load data
-mydata <- readRDS(data_location)
+data_location <- here::here("starter-analysis-exercise","data","raw-data","exampledata2.xlsx")
+rawdata <- readxl::read_excel(data_location)
 ```
 
 
+```{r}
+View(rawdata)
+```
 
 
 
@@ -55,7 +58,7 @@ Showing a bit of code to produce and save a summary table.
 
 
 ```{r}
-summary_df = skimr::skim(mydata)
+summary_df = skimr::skim(rawdata)
 print(summary_df)
 # save to file
 summarytable_file = here("starter-analysis-exercise","results", "tables-files", "summarytable.rds")
@@ -67,12 +70,27 @@ We are saving the results to the `results/tables` folder. Structure the folders 
 
 # Data exploration through figures
 
+Boxplot
+
+It is very difficults to 
+```{r}
+ggplot(rawdata,aes(`Hair Color`,Height))+geom_boxplot()
+```
+
+
+ScatterPlot
+
+```{r}
+ggplot(rawdata,aes(x = `Hair Color`, y = Height)) +
+  geom_point()
+```
+
 Histogram plots for the continuous outcomes. 
 
 Height first.
 
 ```{r}
-p1 <- mydata %>% ggplot(aes(x=Height)) + geom_histogram() 
+p1 <- rawdata %>% ggplot(aes(x=Height)) + geom_histogram() 
 plot(p1)
 figure_file = here("starter-analysis-exercise","results","figures","height-distribution.png")
 ggsave(filename = figure_file, plot=p1) 
@@ -81,7 +99,7 @@ ggsave(filename = figure_file, plot=p1)
 Now weights.
 
 ```{r}
-p2 <- mydata %>% ggplot(aes(x=Weight)) + geom_histogram() 
+p2 <- rawdata %>% ggplot(aes(x=Weight)) + geom_histogram() 
 plot(p2)
 figure_file = here("starter-analysis-exercise","results","figures","weight-distribution.png")
 ggsave(filename = figure_file, plot=p2) 
@@ -90,7 +108,7 @@ ggsave(filename = figure_file, plot=p2)
 Now height as function of weight.
 
 ```{r}
-p3 <- mydata %>% ggplot(aes(x=Height, y=Weight)) + geom_point() + geom_smooth(method='lm')
+p3 <- rawdata %>% ggplot(aes(x=Height, y=Weight)) + geom_point() + geom_smooth(method='lm')
 plot(p3)
 figure_file = here("starter-analysis-exercise","results","figures","height-weight.png")
 ggsave(filename = figure_file, plot=p3) 
@@ -99,7 +117,7 @@ ggsave(filename = figure_file, plot=p3)
 Once more height as function of weight, stratified by gender. Note that there is so little data, it's a bit silly. But we'll plot it anyway.
 
 ```{r}
-p4 <- mydata %>% ggplot(aes(x=Height, y=Weight, color = Gender)) + geom_point() + geom_smooth(method='lm')
+p4 <- rawdata %>% ggplot(aes(x=Height, y=Weight, color = Gender)) + geom_point() + geom_smooth(method='lm')
 plot(p4)
 figure_file = here("starter-analysis-exercise","results","figures","height-weight-stratified.png")
 ggsave(filename = figure_file, plot=p4) 

@@ -1,6 +1,6 @@
 ---
 title: "An example cleaning script"
-author: "Leonel Salazar"
+author: "Andreas Handel"
 date: "2023-01-03"
 output: html_document
 ---
@@ -17,6 +17,7 @@ Load needed packages. make sure they are installed.
 
 ```{r}
 library(readxl) #for loading Excel files
+update.packages("dyplr")
 library(dplyr) #for data processing/cleaning
 library(tidyr) #for data processing/cleaning
 library(skimr) #for nice visualization of data 
@@ -37,6 +38,9 @@ data_location <- here::here("starter-analysis-exercise","data","raw-data","examp
 rawdata <- readxl::read_excel(data_location)
 ```
 
+```{r}
+View(rawdata)
+```
 
 # Check data
 
@@ -72,6 +76,21 @@ d1 <- rawdata %>% dplyr::filter( Height != "sixty" ) %>%
                   dplyr::mutate(Height = as.numeric(Height))
 skimr::skim(d1)
 hist(d1$Height)
+```
+```{r}
+# Correct the weight value of 7000 (assuming it's a typo, we will replace it with NA)
+d1 <- d1 %>%
+  dplyr::mutate(Weight = ifelse(Weight > 500, NA, Weight))
+
+# Fill NA values in Weight with the median weight
+d1 <- d1 %>%
+  dplyr::mutate(Weight = ifelse(is.na(Weight), median(Weight, na.rm = TRUE), Weight))
+
+# Summarize the cleaned data
+skimr::skim(d1)
+
+# Plot histogram of Height
+hist(d1$Height, main = "Histogram of Heights", xlab = "Height (cm)", ylab = "Frequency", col = "blue")
 ```
 
 Now we see that there is one person with a height of 6. That could be a typo, or someone mistakenly entered their height in feet. Since we unfortunately don't know, we might need to remove this person, which we'll do here.
@@ -113,7 +132,7 @@ All done, data is clean now.
 Let's assign at the end to some final variable, this makes it easier to add further cleaning steps above.
 
 ```{r}
-processeddata <- d4
+processeddata2 <- d4
 ```
 
 
@@ -127,8 +146,8 @@ See here for some suggestions on how to store your processed data:
 http://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata
 
 ```{r}
-save_data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata.rds")
-saveRDS(processeddata, file = save_data_location)
+save_data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata2.rds")
+saveRDS(processeddata2, file = save_data_location)
 ```
 
 Note the use of the `here` package and `here` command to specify a path relative to the main project directory, that is the folder that contains the `.Rproj` file. Always use this approach instead of hard-coding file paths that only exist on your computer.
