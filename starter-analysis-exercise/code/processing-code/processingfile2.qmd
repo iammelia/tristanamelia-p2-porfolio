@@ -105,6 +105,14 @@ Well proceed here by removing that individual with that NA entry. Since this kee
 ```{r}
 d4 <- d3 %>% dplyr::filter( !(Gender %in% c("NA","N")) ) %>% droplevels()
 skimr::skim(d4)
+
+#Leo did not clean the data, I added the following code myself.
+
+d5 <- d4 %>%dplyr::filter(`Hair Color` %in% c("blond", "brown", "black", "white", "other"))
+skimr::skim(d5)
+
+d6 <- d5 %>% dplyr::filter(Inseam > 2)
+skimr::skim(d5)
 ```
 
 
@@ -113,7 +121,7 @@ All done, data is clean now.
 Let's assign at the end to some final variable, this makes it easier to add further cleaning steps above.
 
 ```{r}
-processeddata <- d4
+processeddata <- d6
 ```
 
 
@@ -127,7 +135,8 @@ See here for some suggestions on how to store your processed data:
 http://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata
 
 ```{r}
-save_data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata.rds")
+#leo did not fix the processed data copy
+save_data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata2.rds")
 saveRDS(processeddata, file = save_data_location)
 ```
 

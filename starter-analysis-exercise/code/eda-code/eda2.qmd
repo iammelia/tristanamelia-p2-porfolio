@@ -40,7 +40,7 @@ Load the data.
 
 ```{r}
 #Path to data. Note the use of the here() package and not absolute paths
-data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata.rds")
+data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata2.rds")
 #load data
 mydata <- readRDS(data_location)
 ```
@@ -105,6 +105,18 @@ figure_file = here("starter-analysis-exercise","results","figures","height-weigh
 ggsave(filename = figure_file, plot=p4) 
 ```
 
+Figures were not done by Leo. I had to create myself.
+```{r}
+p5 <- mydata %>% ggplot(aes(x = `Hair Color`, y = Height)) + geom_boxplot()
+plot(p5)
+figure_file = here("starter-analysis-exercise","results","figures","height-hair.png")
+ggsave(filename = figure_file, plot=p5)
+
+p6 <- mydata %>% ggplot(aes(x = Inseam, y = Height)) + geom_point()
+plot(p6)
+figure_file = here("starter-analysis-exercise","results","figures","height-inseam.png")
+ggsave(filename = figure_file, plot=p6)
+```
 
 
 # Notes
