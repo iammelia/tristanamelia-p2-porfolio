@@ -1,0 +1,78 @@
+---
+title: "loading/cleaning/wrangling/exploring"
+author: "Leonel Salazar"
+format: docx
+---
+
+```{r}
+library(readxl)
+library(tidyverse)
+
+
+```
+
+
+
+```{r}
+
+
+data <- read.csv("C:/Users/ecruz/OneDrive/Documents/UTSA - Data Science Program/Semester Classes/Practicum II Repository/P2-Practicum-II-Portfolio-EdwardCruz/docs/DatabyState.csv")
+
+
+```
+
+```{r}
+
+
+# Select all columns except 3, 6, and 9
+Data_Clean <- dplyr::select(data, -c(3, 6, 9))
+
+```
+
+```{r}
+
+# Output cleaned data file to a csv file.
+write.csv(Data_Clean, "C:/Users/ecruz/OneDrive/Documents/UTSA - Data Science Program/Semester Classes/Practicum II Repository/P2-Practicum-II-Portfolio-EdwardCruz/docs/Databystate_Clean.csv")
+
+
+
+
+```
+
+
+```{r}
+
+# Assuming your data frame is named "data"
+
+# Filter for rows where "Loss" or "Deadout" is present in any column (case-insensitive)
+library(stringr)  # Load stringr package for regular expressions
+data_filtered <- Data_Clean[rowSums(sapply(data, grepl, pattern = c("Loss"), ignore.case = TRUE)) > 0, ]
+
+
+
+```
+
+
+```{r}
+
+# Output cleaned data file to a csv file.
+write.csv(Data_Clean, "C:/Users/ecruz/OneDrive/Documents/UTSA - Data Science Program/Semester Classes/Practicum II Repository/P2-Practicum-II-Portfolio-EdwardCruz/docs/Databystate_Filtered.csv")
+
+
+```
+
+```{r}
+ggplot(data_filtered, aes( Data.Item, State.ANSI)) + geom_boxplot()
+```
+```{r}
+ggplot(data_filtered, aes(Year)) + geom_histogram()
+```
+```{r}
+ggplot(data_filtered, aes(x = Year)) + 
+  geom_histogram(bins = 10, fill = "blue", color = "black", alpha = 0.7) +  # Adding fill color, border color, and transparency
+  labs(title = "Histogram of Year", x = "Year", y = "Count") +  # Adding labels
+  theme_minimal() 
+```
+
+
+
