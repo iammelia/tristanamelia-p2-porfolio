@@ -73,6 +73,24 @@ summary(pop_le_fit)
 ```
 I created two linear models using lm() function with life expectancy as the dependent variable for both infant mortality and population as the single predictor. 
 Based on the fitted models, population is more significant than infant mortality, with a corresponding high r-squared value. The best model would be the population model.
+```{r}
+regression = lm(african_mortality$life_expectancy ~ african_mortality$population)
+rsq <- function(x, y) summary(lm(african_mortality$life_expectancy ~ african_mortality$population))$r.squared
+r_square = round(rsq(obs, mod), 3)
+
+coeff = round(summary(regression)$coefficients[2],9)
+y_int = round(summary(regression)$coefficients[1],3)
+plot(
+  african_mortality$population,
+  african_mortality$life_expectancy,
+  main='African Life Expectancy \n Population Effect',
+  xlab='Population',
+  ylab='Life Expectancy',
+  col='pink', 
+  bg='purple', 
+  pch = 21,
+)
+```
 
 #Part 2 - Amelia Tristan
 Moji Popoola attempted to work on this part of the exercise but had issues with github and pull requests. I will be using mice_weights dataset from dslabs package.
