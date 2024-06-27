@@ -1,0 +1,245 @@
+---
+title: "loading/cleaning/wrangling/exploring"
+author: "Mojisola Popoola, Leonel Salazar, ED Cruz, Amelia"
+format: docx
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(readxl)
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(tidymodels)
+```
+
+
+
+
+
+```{r}
+# Output cleaned data file to a csv file.
+hcny_data <- read.csv("/Users/knowledgedivine/Desktop/practicum2/mojisolapopola-P2-portfolio/docs/hcny_CleanDraft.csv", header = FALSE, stringsAsFactors = FALSE)
+```
+
+
+
+
+
+```{r}
+head(hcny_data)
+```
+
+
+```{r}
+str(hcny_data)
+```
+
+
+```{r}
+summary(hcny_data)
+```
+
+
+
+```{r}
+# Step 2: Merge the first two rows to create a new header
+new_header <- paste(hcny_data[1, ], hcny_data[2, ], sep = " ")
+
+# Step 3: Set the new header
+colnames(hcny_data) <- new_header
+
+# Step 4: Remove the first three rows
+hcny_data <- hcny_data[-c(1:3), ]
+
+
+# Step 5: Remove completely blank rows
+hcny_data <- hcny_data[rowSums(hcny_data != "") > 0, ]
+
+
+# Display the resulting data frame
+head(hcny_data)
+```
+
+
+```{r}
+# Assuming hcny_data is your cleaned data frame
+colnames(hcny_data) <- c("state", "varroa_mites", "other_pests", "disease", "pesticides", "other", "unknown")
+```
+
+
+
+
+```{r}
+head(hcny_data)
+```
+
+
+```{r}
+# Convert specified columns to numeric with warning suppression
+hcnydata_cleaned <- hcny_data %>%
+  mutate(across(c("varroa_mites", "other_pests", "disease", "pesticides", "other", "unknown"), ~suppressWarnings(as.numeric(.))))
+
+# Display the resulting data frame
+head(hcnydata_cleaned)
+```
+
+
+```{r}
+head(hcnydata_cleaned)
+```
+
+
+```{r}
+# Verify the changes
+str(hcnydata_cleaned)
+```
+
+
+
+```{r}
+head(hcnydata_cleaned)
+```
+
+
+```{r,message=FALSE, warning=FALSE}
+ggplot(hcnydata_cleaned, aes(varroa_mites)) + geom_histogram()
+```
+
+
+
+
+```{r}
+view((hcnydata_cleaned))
+```
+
+
+
+```{r}
+# Write the cleaned data to a new CSV file
+write.csv(hcnydata_cleaned, "/Users/knowledgedivine/Desktop/honeyproject/hcnydata_cleaned.csv", row.names = FALSE)
+```
+
+********************Conclusion- all code below is test code right now********************************
+
+
+
+
+
+```{r}
+# Assuming hcnydata_cleaned is your data frame
+hcnydata_cleaned <- hcnydata_cleaned[apply(hcnydata_cleaned, 1, function(x) !all(is.na(x))), ]
+
+# Print the modified data frame to verify the changes
+head(hcnydata_cleaned)
+view(hcnydata_cleaned)
+
+```
+
+
+```{r}
+str(hcnydata_cleaned)
+```
+
+
+```{r, message=FALSE}
+update.packages('mgcv')
+library(mgcv)
+```
+
+
+
+```{r}
+# Convert the 'state' column to a factor
+hcnydata_cleaned$state <- as.factor(hcnydata_cleaned$state)
+
+# Display the resulting data frame
+head(hcnydata_cleaned)
+```
+
+```{r}
+# Step 3: Reindex the rows starting from 1
+rownames(hcnydata_cleaned) <- NULL
+```
+
+
+
+
+```{r}
+# Identify the rows to exclude
+rows_to_exclude <- c(46)
+
+# Remove rows 45 to 52 while excluding row 46
+data_hcny <- hcnydata_cleaned[-c(45:52)[-which(c(45:52) %in% rows_to_exclude)], ]
+```
+
+
+
+
+
+
+```{r}
+library(ggplot2)
+library(ggplot2)
+
+# Create a bar graph to show state and varroa_mites
+ggplot(data = data_hcny, aes(x = state, y = varroa_mites)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Varroa Mites by State",
+       x = "State",
+       y = "Varroa Mites Count") +
+  theme_minimal() +
+  coord_flip()
+```
+
+
+
+
+# Remove all rows with any NA values
+
+```{r}
+
+library(tidyr)
+
+
+my_data <- data_hcny %>% drop_na()
+
+# Verify that NAs have been removed
+glimpse(my_data)
+```
+# Bivariate Analysis
+
+```{r, message=FALSE, warning=FALSE}
+## Example of a bivariate plot between 'state' and 'varroa_mites'
+ggplot(my_data, aes(x = disease, y = varroa_mites)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Bivariate Relationship between State and Varroa Mites",
+       x = "State",
+       y = "Varroa Mites")
+```
+# Multivariable GLM
+
+```{r}
+library(broom)
+
+# Specify the GLM model
+glm_spec <- linear_reg() %>%
+  set_engine("glm")
+
+# Create a recipe for preprocessing the data
+glm_recipe <- recipe(varroa_mites ~ other_pests + disease + pesticides + other + unknown, data = my_data) %>%
+  step_normalize(all_predictors())
+
+# Create a workflow
+glm_workflow <- workflow() %>%
+  add_model(glm_spec) %>%
+  add_recipe(glm_recipe)
+
+# Fit the model
+glm_fit <- fit(glm_workflow, data = my_data)
+
+# Print the model summary using tidy()
+model_summary <- tidy(glm_fit)
+print(model_summary)
+```
+
