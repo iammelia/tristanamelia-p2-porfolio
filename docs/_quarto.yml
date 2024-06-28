@@ -19,7 +19,7 @@ website:
           - text: "Tidy Tuesday Exercise"
             file: tidytuesday-exercise/tidytuesday-exercise.qmd
 	  - text: "Data Exercise"
-	    file: data-exercise/data-exercise.rmd
+	    file: data-exercise/data-exercise.qmd
     right:
       - icon: github 
         href: https://github.com/iammelia/tristanamelia-p2-porfolio       
