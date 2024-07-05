@@ -1,0 +1,61 @@
+---
+title: "Assignment 5"
+format: html
+---
+
+I am exploring the CDC records of botulism cases from 1899 to 2017. This dataset was last updated in May 2019. All records are non-infant cases.
+```{r}
+
+library(tidyverse)
+library(ggplot2)
+
+#Botulism records from 1899 to 2017 by transmission and toxin type, state, and frequency
+botulism = read.csv("cdc-exercise/Botulism_20240704.csv")
+
+
+#change to factor
+botulism$BotType = as.factor(botulism$BotType)
+botulism$ToxinType = as.factor(botulism$ToxinType)
+botulism$State = as.factor(botulism$State)
+
+#filtering out NA entries. State is only variable with null entries
+botulism = botulism %>% dplyr::filter(!is.na(State))
+
+#stats summary
+summary(botulism)
+
+```
+
+
+```{r, warning = FALSE}
+
+#histogram of cases by year
+by_year = ggplot(data = botulism, aes(x = Year)) + geom_histogram(binwidth = 2, color = "black", fill = "green" )
+by_year
+
+#filtering data to only include top states
+top_states = botulism %>% dplyr::filter(State == c("California", "Washington", "Texas", "Colorado", "Oregon", "Alaska"))
+
+#contraction type by top state
+by_bot_state = ggplot(data = top_states, aes(x = State )) + geom_bar(color = "black", fill = "pink") + facet_wrap(~BotType, scales = "free") + labs(x = "State", y = "Count", title = "Case Count by Top  State and Contraction Type")
+by_bot_state
+
+#toxin type by top state
+by_tox_state = ggplot(data = top_states, aes(x = State )) + geom_bar(color = "black", fill = "purple") + facet_wrap(~ToxinType, scales = "free") + labs(x = "State", y = "Count", title = "Case Count by Top State and Toxin Type")
+by_tox_state
+
+#filtering data to only include top toxins
+top_tox = botulism %>% dplyr::filter(ToxinType == c("A", "B", "Unknown"))
+
+#top toxin by year
+freq_year_tox = ggplot(data = top_tox, aes(x = Year)) + geom_histogram(binwidth = 2, color = "black", fill = "cyan" )+ facet_wrap(~ToxinType) + labs(x = "Year", y = "Count", title = "Frequency by Year and Toxin Type")
+freq_year_tox
+
+
+#filtering data to only include top contraction and toxin types
+top_con = botulism %>% dplyr::filter(BotType == c("Infant", "Foodborne"), ToxinType == c("A", "B", "Unknown"))
+by_tox_bot = ggplot(data = top_con, aes(x = BotType)) + geom_bar(color = "black", fill = "grey") + facet_wrap(~ToxinType) + labs(x = "Contraction Type", y = "Count", title = "Frequency by Contraction Type and Toxin Type")
+by_tox_bot
+                                     
+```
+Botulism cases went up around 1975, with A and B top toxins reflecting this increase. Contraction from an infant is the highest contraction type. By analyzing the top toxin and contraction types, toxin B happens most within infant contractions. We can hypothesize that B toxin is present in cases of infant botulism, and thus pass this toxin onto the non-infant cases reported in this dataset. On the opposite end, foodborne contractions have the highest unknown toxin. The top three toxins are seen consistently across the frequency of the top states (California, Alaska, Colorado, Oregon, Texas, Washington). All other toxins (not A, B, and unknown) only occur in one to two states.
