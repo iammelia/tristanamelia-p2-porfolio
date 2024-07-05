@@ -1,5 +1,4 @@
-"state","varroa_mites","other_pests","disease","pesticides","other","unknown"
-"",NA,NA,NA,NA,NA,NA
+"State","Varroa_Mites","Other_Parasites 1/","Disease2/","Pesticides","Other/3","Unknown"
 "Alabama",37.1,10.4,2.1,1,4.4,9.1
 "Arizona",15.4,NA,2.1,NA,0.7,NA
 "Arkansas",22.4,13.1,2.8,7.4,1.9,3.1
@@ -9,6 +8,7 @@
 "Florida",49.5,21.8,7.1,18.2,15.1,7.7
 "Georgia",30.2,12.2,2.4,3.9,9.8,7.1
 "Idaho",40.9,6.7,5.9,5.7,1.3,1.4
+"",NA,NA,NA,NA,NA,NA
 "Illinois",25.6,13.3,3.2,6.8,6.7,3.7
 "Indiana",23.8,5.6,1.6,7.4,18.3,3
 "Iowa",17.9,2.6,4.5,9.9,5.1,NA
@@ -19,6 +19,7 @@
 "Maryland",11.7,0.6,NA,NA,0.5,4.5
 "Massachusetts",28.2,NA,0.7,NA,10.6,1.6
 "Michigan",16.5,1.7,1.8,2.1,3.3,10.3
+"",NA,NA,NA,NA,NA,NA
 "Minnesota",13,2.1,NA,10.1,1.1,7.7
 "Mississippi",12.6,3.5,1,3.2,9.1,2.4
 "Missouri",13.1,6.4,0.8,0.5,4.8,3.4
@@ -29,6 +30,7 @@
 "New York",24.7,9.1,2.2,2.3,9.3,NA
 "North Carolina",28.8,8.8,0.9,NA,1.6,2.5
 "North Dakota",60.5,6.9,2.7,6.9,1.3,NA
+"",NA,NA,NA,NA,NA,NA
 "Ohio",65.3,33.5,0.7,5.7,1,4.4
 "Oklahoma",4,0.9,NA,NA,0.7,NA
 "Oregon",27.9,9.3,3.5,14.3,4.3,NA
@@ -39,13 +41,17 @@
 "Texas",46.8,42.3,10.9,12.1,30.1,10.2
 "Utah",55,33.6,25.5,28,28.6,NA
 "Vermont",9.7,0.5,NA,0.8,NA,1.2
+"",NA,NA,NA,NA,NA,NA
 "Virginia",23.3,7.5,0.8,NA,6.6,3
 "Washington",41.6,1,6.1,9.2,4.3,NA
 "West Virginia",31.1,3.2,1.8,NA,1.8,0.8
 "Wisconsin",67.2,9.8,47.8,49.2,48.1,46.8
 "Wyoming",17.2,10.9,NA,NA,2.3,2.5
+"",NA,NA,NA,NA,NA,NA
 "Other States 4/",10.6,3.5,3.3,2.1,0.5,NA
+"",NA,NA,NA,NA,NA,NA
 "United States",50.9,13.9,6.5,10.5,13.6,6
+"",NA,NA,NA,NA,NA,NA
 "#NAME?",NA,NA,NA,NA,NA,NA
 "(Z)  Less than half of the unit shown.",NA,NA,NA,NA,NA,NA
 "1/ Tracheal mites, nosema, hive beetle, wax moths, etc.",NA,NA,NA,NA,NA,NA

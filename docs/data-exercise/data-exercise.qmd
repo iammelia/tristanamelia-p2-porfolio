@@ -1,0 +1,83 @@
+---
+title: "Data Exercise"
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+#seed for reproducibility
+set.seed(92)
+```
+
+```{r}
+#start generating data
+n = 1200
+
+#bone breaks in adolescents
+age <- round(runif(n, 10, 18), 0)
+break_type <- c("compound", "spiral", "transverse", "greenstick", "comminuted")
+bone_breaks <- sample(break_type, n, replace = TRUE, prob = c(0.2, 0.15, 0.4, 0.38, 0.29))
+```
+
+
+```{r}
+break_num <- as.numeric(factor(bone_breaks, levels = break_type))
+
+#surgery cost to fix broken bone
+surgery_cost <- round(1500 + age * 10 + break_num * 200 + rnorm(n, mean = 0, sd = 50), 0)
+#time in hours for surgery
+surgery_time <- round(12 - age * 0.1 + rnorm(n, mean = 0, sd = 5), 1)
+
+#percent of recovery without complications
+recovery <- round(5 + surgery_cost * 0.005 - surgery_time * 0.05 + rnorm(n, mean = 0, sd = 1), 1)
+
+#data frame for break data
+break_data <- data.frame(age, break_type, surgery_cost, surgery_time, recovery)
+
+summary(break_data)
+```
+```{r}
+
+#surgery cost by age
+ggplot(break_data, aes(x = age, y = surgery_cost)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+
+#surgery cost by break type
+ggplot(break_data, aes(x = break_type, y = surgery_cost)) + 
+  geom_boxplot()
+
+#surgery time by age
+ggplot(break_data, aes(x = age, y = surgery_time)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+
+#surgery cost by time
+ggplot(break_data, aes(x = surgery_time, y = surgery_cost)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+
+#recovery rate by surgery time
+ggplot(break_data, aes(x = surgery_time, y = recovery)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+```
+###Fit simple models to the data
+```{r}
+#cost by age and break type model
+cost_model <- lm(surgery_cost ~ age + break_type, data = break_data)
+summary(cost_model)
+
+#time by age model
+time_model <- lm(surgery_time ~ age, data = break_data)
+summary(time_model)
+
+#recovery rate by cost model
+recovery_model <- lm(recovery ~ surgery_cost + surgery_time, data = break_data)
+summary(recovery_model)
+
+#exploring another type of model
+recovery_glm <- glm(recovery ~ surgery_cost + surgery_time, family = gaussian(link = "identity"), data = break_data)
+summary(recovery_glm)
+```

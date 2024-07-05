@@ -174,57 +174,125 @@ ggplot(data_filtered, aes(x = Year)) +
   theme_minimal() 
 ```
 
+---
+title: "loading/cleaning/wrangling/exploring"
+author: "Edward Cruz"
+format: docx
+---
+
 ```{r}
 library(readxl)
+update.packages("tidyverse")
 library(tidyverse)
+update.packages("dplyr")
 library(dplyr)
-
+update.packages('mgcv')
+library(mgcv)
 ```
 
 ```{r}
 # Output cleaned data file to a csv file.
 hcny_data <- read.csv("C:/Users/ecruz/OneDrive/Documents/UTSA - Data Science Program/Semester Classes/Practicum II Repository/P2-Practicum-II-Portfolio-EdwardCruz/docs/hcny_CleanDraft.csv", header = FALSE, stringsAsFactors = FALSE)
-
-#view(hcny_data)
 ```
 
 ```{r}
-# Read the CSV file
-hcny_data <- read.csv("C:/Users/ecruz/OneDrive/Documents/UTSA - Data Science Program/Semester Classes/Practicum II Repository/P2-Practicum-II-Portfolio-EdwardCruz/docs/hcny_CleanDraft.csv", header = FALSE, stringsAsFactors = FALSE)
+head(hcny_data)
+```
 
+```{r}
+str(hcny_data)
+```
+
+```{r}
+summary(hcny_data)
+```
+
+```{r}
+view(hcny_data)
 ```
 
 ```{r}
 # Merge the first two rows to create a proper header
-header <- hcny_data[1:2, ]
+header <- hcny_data[1:4, ]
 header <- sapply(header, function(x) paste(na.omit(x), collapse = " "))
 colnames(hcny_data) <- header
+head(header)
+```
 
+```{r}
 # Remove the first two rows (header rows) and any completely blank rows
-data_clean2 <- hcny_data[-c(1, 2), ]
+hcnydata_cleaned <- hcny_data[-c(1,2), ]
+head(hcnydata_cleaned)
+```
 
-# Remove rows that are completely blank
-data_clean2 <- data_clean2[rowSums(is.na(data_clean2) | data_clean2 == "") != ncol(data_clean2), ]
-
-# Convert columns to numeric where applicable (if they contain percentage values)
-hcnydata_cleaned <- data_clean2 %>%
-  mutate(across(.cols = -1, .fns = ~ as.numeric(gsub("[^0-9.-]", "", .))))
-
+```{r}
 # Assuming hcny_data_cleaned is your cleaned data frame
-colnames(hcnydata_cleaned) <- c("state", "varroa_mites", "other_pests", "disease", "pesticides", "other", "unknown")
+colnames(hcnydata_cleaned) <- c("State", "Varroa_Mites", "Other_Parasites_1/", "Disease_2/", "Pesticides", "Other_3/", "Unknown")
+```
+
+```{r}
+head(hcnydata_cleaned)
+```
+
+```{r}
+# Convert specified columns to numeric
+hcnydata_cleaned <- hcnydata_cleaned %>%
+  mutate(across(c("Varroa_Mites", "Other_Parasites_1/", "Disease_2/", "Pesticides", "Other_3/", "Unknown"), as.numeric))
+```
+
+```{r}
+# View the updated data frame
+hcnydata_cleaned<-hcnydata_cleaned[-1,]
+```
+
+```{r}
+head(hcnydata_cleaned)
+```
+
+```{r}
+# Verify the changes
+str(hcnydata_cleaned)
+```
+
+```{r}
+head(hcnydata_cleaned)
+```
+
+```{r}
+view(hcnydata_cleaned)
+```
+
+```{r}
+ggplot(hcnydata_cleaned, aes(Varroa_Mites)) + geom_histogram()
+```
+
+```{r}
+ggplot(hcnydata_cleaned, aes(x = Varroa_Mites)) +
+  geom_histogram(binwidth = 1, fill = "blue", color = "black") +
+  labs(title = "Histogram of Varroa Mites",
+       x = "Varroa Mites",
+       y = "Frequency")
+```
+
+```{r}
+# Example scatter plot of two variables
+ggplot(hcnydata_cleaned, aes(x = Varroa_Mites, y = "Desease_2/")) +
+  geom_point() +
+  labs(title = "Scatter Plot of Varroa Mites vs Disease",
+       x = "Varroa Mites",
+       y = "2 American and European Foul Brood")
+```
+
+```{r}
+view(hcnydata_cleaned)
 ```
 
 ```{r}
 # Write the cleaned data to a new CSV file
 write.csv(hcnydata_cleaned, "C:/Users/ecruz/OneDrive/Documents/UTSA - Data Science Program/Semester Classes/Practicum II Repository/P2-Practicum-II-Portfolio-EdwardCruz/docs/hcnydata_cleaned.csv", row.names = FALSE)
-
-# View the updated data frame
-view(hcnydata_cleaned)
 ```
 
-```{r}
-ggplot(hcnydata_cleaned, aes(varroa_mites)) + geom_histogram()
-```
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*Conclusion- all code below is test code right now\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
 
 ## Statistical analysis
 

@@ -18,24 +18,30 @@ library(tidyverse)
 
 data <- read.csv("C:/Users/ecruz/OneDrive/Documents/UTSA - Data Science Program/Semester Classes/Practicum II Repository/P2-Practicum-II-Portfolio-EdwardCruz/docs/DatabyState.csv")
 
-
-View(data)
 ```
 
 ```{r}
+str(data)
+```
 
-
+```{r}
 # Select all columns except 3, 6, and 9
 Data_Clean <- dplyr::select(data, -c(3, 6, 9))
-
 ```
+
+```{r}
+head(data)
+```
+
+```{r}
+View(data)
+```
+
 
 ```{r}
 
 # Output cleaned data file to a csv file.
 write.csv(Data_Clean, "C:/Users/ecruz/OneDrive/Documents/UTSA - Data Science Program/Semester Classes/Practicum II Repository/P2-Practicum-II-Portfolio-EdwardCruz/docs/Databystate_Clean.csv")
-
-view(Data_Clean)
 
 ```
 
